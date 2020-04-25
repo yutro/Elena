@@ -1,0 +1,17 @@
+{
+  "name": "elena",
+  "description": "word trainer chrome extension",
+  "scripts": {
+    "start": "tsc -w --pretty src/index --outDir ./dist"
+  },
+  "keywords": [
+    "word trainer",
+    "chrome word learning extension"
+  ],
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
