@@ -8,27 +8,32 @@
     "prestart": "yarn clean && yarn cp:assets",
     "start": "yarn dev:content",
     "clean": "rm -rf dist",
-    "dev:content": "parcel src/contentScript/index.ts -d dist/contentScript",
+    "dev:content": "parcel src/contentScript/dev-index.html",
+    "build:content": "parcel build src/contentScript/index.tsx -d dist/contentScript",
     "build": "yarn clean && yarn cp:assets && yarn build:content",
-    "build:content": "parcel build src/contentScript/index.ts -d dist/contentScript",
     "cp:assets": "yarn cp:static && yarn cp:manifest",
     "cp:manifest": "cp src/manifest.json dist",
     "cp:static": "cp -r src/static dist"
   },
   "dependencies": {
     "dexie": "^2.0.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": ">16.8.0",
+    "react-dom": ">16.8.0",
+    "react-hanger": "^2.2.1",
+    "tailwindcss": "^1.4.4"
   },
   "devDependencies": {
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "babel-types": "^6.26.0",
+    "less": "^3.11.1",
     "parcel-bundler": "^1.12.4",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "postcss-remove-unused-css": "^1.0.4"
   },
   "alias": {
     "@elena:db": "./src/DB/index.ts",
-    "@elena:consts": "./src/consts.ts"
+    "@elena:consts": "./src/consts.ts",
+    "@elena:utils": "./src/utils/index.ts"
   }
 }
