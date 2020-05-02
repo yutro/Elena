@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "Elena",
+  "description": "Words trainer",
+  "version": "0.0.1",
+
+  "icons": {
+    "16": "images/elena-logo.png",
+    "48": "images/elena-logo.png",
+    "128": "images/elena-logo.png"
+  },
+  "content_scripts": [
+    {
+      "js": ["./contentScript/index.js"],
+      "css": ["./contentScript/index.css"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "permissions": ["storage", "activeTab"]
+}

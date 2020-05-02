@@ -1,17 +1,34 @@
 {
   "name": "elena",
-  "description": "word trainer chrome extension",
-  "scripts": {
-    "start": "tsc -w --pretty src/index --outDir ./dist"
-  },
-  "keywords": [
-    "word trainer",
-    "chrome word learning extension"
-  ],
-  "version": "0.0.0",
-  "main": "dist/index.js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "icokie <icokie@yandex.ru>",
   "license": "MIT",
+  "scripts": {
+    "prestart": "yarn clean && yarn cp:assets",
+    "start": "yarn dev:content",
+    "clean": "rm -rf dist",
+    "dev:content": "parcel src/contentScript/index.ts -d dist/contentScript",
+    "build": "yarn clean && yarn cp:assets && yarn build:content",
+    "build:content": "parcel build src/contentScript/index.ts -d dist/contentScript",
+    "cp:assets": "yarn cp:static && yarn cp:manifest",
+    "cp:manifest": "cp src/manifest.json dist",
+    "cp:static": "cp -r src/static dist"
+  },
+  "dependencies": {
+    "dexie": "^2.0.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
   "devDependencies": {
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "babel-types": "^6.26.0",
+    "parcel-bundler": "^1.12.4",
     "typescript": "^3.8.3"
+  },
+  "alias": {
+    "@elena:db": "./src/DB/index.ts",
+    "@elena:consts": "./src/consts.ts"
   }
 }
