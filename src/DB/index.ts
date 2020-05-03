@@ -1,35 +1,35 @@
-import { extId } from "@elena:consts";
-import Dixie from "dexie";
+import { extId } from '@elena:consts'
+import Dixie from 'dexie'
 
-interface IWord {
-  id?: number;
-  text: string;
+interface Word {
+  id?: number
+  text: string
   description?: string
 }
 
 const dbConfig = {
   name: extId,
   version: 1,
-};
+}
 
 class DataBase extends Dixie {
-  words: Dixie.Table<IWord, number>;
+  words: Dixie.Table<Word, number>
 
   constructor() {
-    super(dbConfig.name);
+    super(dbConfig.name)
 
     this.version(dbConfig.version).stores({
-      words: "++id, text, description",
-    });
+      words: '++id, text, description',
+    })
 
-    this.words = this.table("words");
+    this.words = this.table('words')
   }
 
-  addWord(word: IWord) {
-    return this.words.put(word);
+  addWord(word: Word): Promise<number> {
+    return this.words.put(word)
   }
 }
 
-const Db = new DataBase();
+const Db = new DataBase()
 
-export { Db };
+export { Db }

@@ -1,3 +1,3 @@
-import {createContext} from "react";
+import { createContext } from 'react'
 
-export const DataContext = createContext({text: '', displayPopUp: (val: boolean) => {}})
+export const DataContext = createContext({ text: '', displayPopUp: (val: boolean) => {} })
