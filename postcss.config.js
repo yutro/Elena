@@ -1,19 +1,13 @@
-// module.exports = {
-//   plugins: [
-//     require('tailwindcss'),
-//     "postcss-remove-unused-css": {
-//   "path": "./app",
-//       "exts": [".js", ".html"]
-// }
-//   ]
-// }
+const isProduction = process.env.NODE_ENV === 'production'
 
 module.exports = {
   plugins: {
     tailwindcss: {},
-    "postcss-remove-unused-css": {
-      path: "./src/contentScript",
-      exts: [".tsx"]
-    }
-  }
+    ...(isProduction && {
+      'postcss-remove-unused-css': {
+        path: './src/contentScript',
+        exts: ['.tsx'],
+      },
+    }),
+  },
 }
