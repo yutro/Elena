@@ -1,22 +1,43 @@
-import { Db } from '@elena:db'
-import { DataContext } from '../handlers'
-import React, { FC, MouseEventHandler, useContext } from 'react'
+import React, { FunctionComponent } from 'react'
+import { ImageLogoIconBase64 } from '../../../consts'
+import { Db } from '../../../DB'
+import { ExtButton } from '../ExtButton'
+import cogoToast from 'cogo-toast'
 
-export const ModalWindow: FC = () => {
-  const { text, displayPopUp } = useContext(DataContext)
-  const saveButtonClickHandler: MouseEventHandler<HTMLButtonElement> = async () => {
-    await Db.addWord({ text })
-    displayPopUp(false)
+type ModalWindowProps = {
+  closePopUp: Function
+  selectedText: string
+}
+
+export const ModalWindow: FunctionComponent<ModalWindowProps> = ({ closePopUp, selectedText }) => {
+  const extBtnClickHandler = async (): Promise<void> => {
+    const text = selectedText.trim()
+
+    if (!(await Db.hasWord('text', text))) {
+      await Db.addWord({ text })
+      cogoToast.loading(
+        <div className="flex items-center">
+          <img src={ImageLogoIconBase64} alt="elena extension icon image" />
+          word <span className="font-bold p-1">{text}</span> added to inbox
+        </div>,
+        { position: 'bottom-right', hideAfter: 6 }
+      )
+    } else {
+      cogoToast.info(
+        <div className="flex items-center">
+          <img src={ImageLogoIconBase64} alt="elena extension icon image" />
+          word <span className="font-bold p-1">{text}</span> already exists :)
+        </div>,
+        { position: 'bottom-right', hideAfter: 6 }
+      )
+    }
+
+    closePopUp(true)
   }
 
   return (
-    <div className="shadow-xl rounded-lg p-4 bg-white border border-gray-500">
-      <div>
-        <span className="font-bold">Text:</span> {text}
-      </div>
-      <button onClick={saveButtonClickHandler} className="p-2 my-2 bg-gray-300 rounded-lg border border-gray-500">
-        save to Deck
-      </button>
+    <div>
+      <ExtButton onClick={extBtnClickHandler} />
     </div>
   )
 }
