@@ -1,81 +1,56 @@
-import { getSelectedText } from '@elena:utils'
+import React, { FunctionComponent, useEffect, useState } from 'react'
+import { Maybe } from '../../@types'
+import { getSelectedText } from '../../utils'
 import { ModalWindow } from './ModalWindow'
-import React, { RefObject, useEffect, useRef, useState } from 'react'
-import { useBoolean, UseBooleanActions } from 'react-hanger/array'
-import { DataContext } from './handlers'
 
-const useDisplayPopUpApp = (): [boolean, UseBooleanActions, RefObject<HTMLDivElement>] => {
-  const popUpElementNode = useRef<HTMLDivElement>(null)
-  const [isActive, isActiveActions] = useBoolean(false)
+export const PopUpApp: FunctionComponent = () => {
+  const [containerPosition, setContainerPosition] = useState<[number, number]>()
+  const [selectedText, setSelectedText] = useState<string>()
 
-  const handleClick: EventListener = ({ target }) => {
-    if (target && !popUpElementNode.current?.contains(target as HTMLElement)) {
-      if (isActive) {
-        return isActiveActions.setFalse()
-      }
-    }
-  }
-  const handleDblClick: EventListener = (e) => {
-    if (popUpElementNode.current) {
-      const { clientX, clientY, target } = e as MouseEvent
-      const clickedElement = target as HTMLElement
-
-      const { current: container } = popUpElementNode
-
-      container.style.setProperty('left', `${clientX}px`)
-      container.style.setProperty('top', `${clientY + window.pageYOffset}px`)
-
-      isActiveActions.setTrue()
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('click', handleClick)
-    document.addEventListener('dblclick', handleDblClick)
-
-    return () => {
-      document.removeEventListener('click', handleClick)
-      document.removeEventListener('dblclick', handleDblClick)
-    }
-  })
-
-  return [isActive, isActiveActions, popUpElementNode]
-}
-
-export const PopUpApp = () => {
-  const [isActive, displayActions, refNode] = useDisplayPopUpApp()
-
-  const [text, setText] = useState<string>('')
-
-  const selectTextHandler: EventListener = ({ target }) => {
+  const mouseUpClickHandler: EventListener = (event) => {
     const selection = window.getSelection()
 
     if (selection) {
       const selectedText = getSelectedText(selection)
 
       if (selectedText) {
-        setText(selectedText)
+        setSelectedText(selectedText)
+        const textContainer = selection.focusNode?.parentNode as Maybe<HTMLElement>
+        const { clientY, clientX } = event as MouseEvent
+
+        if (textContainer) {
+          const clickOffsetLeftInsideTextContainer = clientX - textContainer.offsetLeft
+          const clickOffsetTop = window.pageYOffset + clientY
+
+          setContainerPosition([clickOffsetTop, clickOffsetLeftInsideTextContainer])
+        }
+      } else {
+        setContainerPosition(undefined)
       }
     }
   }
 
   useEffect(() => {
-    window.addEventListener('dblclick', selectTextHandler)
-    return () => window.removeEventListener('dblclick', selectTextHandler)
-  })
+    window.addEventListener('mouseup', mouseUpClickHandler)
+
+    return (): void => {
+      window.removeEventListener('mouseup', mouseUpClickHandler)
+    }
+  }, [])
+
+  if (!containerPosition || !selectedText) {
+    return null
+  }
+
+  const [top, left] = containerPosition
+
+  const setHidden = (): void => {
+    setContainerPosition(undefined)
+  }
 
   return (
-    <div ref={refNode} className="absolute mt-5 ml-4">
-      {isActive ? (
-        <DataContext.Provider
-          value={{
-            text,
-            displayPopUp: (val: boolean) => displayActions.setValue(val),
-          }}
-        >
-          <ModalWindow />
-        </DataContext.Provider>
-      ) : null}
+    <div className="absolute mt-3 ml-4" style={{ top: `${top}px`, left: `${left}px` }}>
+      <ModalWindow closePopUp={setHidden} selectedText={selectedText} />
     </div>
   )
 }
