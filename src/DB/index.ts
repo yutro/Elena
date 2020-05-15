@@ -1,5 +1,5 @@
-import { extId } from '@elena:consts'
 import Dixie from 'dexie'
+import { extId } from '../consts'
 
 interface Word {
   id?: number
@@ -27,6 +27,21 @@ class DataBase extends Dixie {
 
   addWord(word: Word): Promise<number> {
     return this.words.put(word)
+  }
+
+  getWord(key: keyof Word, value: string): Promise<Word> {
+    return this.words.where(key).equalsIgnoreCase(value).first()
+  }
+
+  async hasWord(key: keyof Word, value: string): Promise<boolean> {
+    try {
+      const word = await this.getWord(key, value)
+
+      return Boolean(word)
+    } catch (e) {
+      console.log('dixie error:', e)
+      return false
+    }
   }
 }
 
