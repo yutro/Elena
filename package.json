@@ -19,10 +19,11 @@
   },
   "dependencies": {
     "dexie": "^2.0.4",
-    "react": ">16.8.0",
-    "react-dom": ">16.8.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-hanger": "^2.2.1",
-    "tailwindcss": "^1.4.4"
+    "tailwindcss": "^1.4.4",
+    "cogo-toast": "^4.2.3"
   },
   "devDependencies": {
     "@types/react": "^16.9.34",
@@ -44,10 +45,5 @@
     "postcss-remove-unused-css": "^1.0.4",
     "prettier": "^2.0.5",
     "typescript": "^3.8.3"
-  },
-  "alias": {
-    "@elena:db": "./src/DB/index.ts",
-    "@elena:consts": "./src/consts.ts",
-    "@elena:utils": "./src/utils/index.ts"
   }
 }
