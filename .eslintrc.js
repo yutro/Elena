@@ -33,6 +33,8 @@ module.exports = {
     ],
     "rules": {
         "prettier/prettier": "warn",
-        "@typescript-eslint/member-delimiter-style": "off"
+        "@typescript-eslint/member-delimiter-style": "off",
+        "@typescript-eslint/ban-ts-ignore": "off",
+        "react/prop-types": "off"
     }
 };
