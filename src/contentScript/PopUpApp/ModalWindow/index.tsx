@@ -13,8 +13,9 @@ export const ModalWindow: FunctionComponent<ModalWindowProps> = ({ closePopUp, s
   const extBtnClickHandler = async (): Promise<void> => {
     const text = selectedText.trim()
 
-    if (!(await Db.hasWord('text', text))) {
-      await Db.addWord({ text })
+    if (!(await Db.textsCollection().where('content').equalsIgnoreCase(text).count())) {
+      await Db.textsCollection().put({ content: text, status: 'active' })
+
       cogoToast.loading(
         <div className="flex items-center">
           <img src={ImageLogoIconBase64} alt="elena extension icon image" />
