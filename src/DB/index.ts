@@ -1,10 +1,26 @@
 import Dixie from 'dexie'
 import { extId } from '../consts'
 
-interface Word {
-  id?: number
-  text: string
+type ID = number
+
+interface Text {
+  id?: ID
+  content: string
   description?: string
+  status: 'active' | 'archived'
+  deckId?: ID
+}
+
+interface Setting {
+  id?: ID
+  name: string
+  value: string | boolean
+}
+
+interface Deck {
+  id?: ID
+  name: string
+  values: ReadonlyArray<ID>
 }
 
 const dbConfig = {
@@ -13,35 +29,34 @@ const dbConfig = {
 }
 
 class DataBase extends Dixie {
-  words: Dixie.Table<Word, number>
+  texts: Dixie.Table<Text, number>
+  settings: Dixie.Table<Setting, number>
+  decks: Dixie.Table<Deck, number>
 
   constructor() {
     super(dbConfig.name)
 
     this.version(dbConfig.version).stores({
-      words: '++id, text, description',
+      texts: '++id, content, description, status, deckId',
+      settings: '++id, name, value',
+      decks: '++id, name, textsIds',
     })
 
-    this.words = this.table('words')
+    this.texts = this.table('texts')
+    this.settings = this.table('settings')
+    this.decks = this.table('decks')
   }
 
-  addWord(word: Word): Promise<number> {
-    return this.words.put(word)
+  textsCollection() {
+    return this.texts
   }
 
-  getWord(key: keyof Word, value: string): Promise<Word> {
-    return this.words.where(key).equalsIgnoreCase(value).first()
+  settingsCollection() {
+    return this.settings
   }
 
-  async hasWord(key: keyof Word, value: string): Promise<boolean> {
-    try {
-      const word = await this.getWord(key, value)
-
-      return Boolean(word)
-    } catch (e) {
-      console.log('dixie error:', e)
-      return false
-    }
+  decksCollection() {
+    return this.decks
   }
 }
 
