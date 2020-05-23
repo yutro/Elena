@@ -21,6 +21,6 @@
     "default_popup": "./popUpApp/index.html",
     "default_title": "Elena Ext"
   },
-  "content_security_policy": "script-src 'sha256-XIHgr5+Mc5THHqJpIw92zdqb686UT6+7FjETo8WQmmQ='; object-src 'self';",
-  "permissions": ["storage", "activeTab"]
+  "content_security_policy": "script-src 'self' 'sha256-wbq9qgx6lkYJpHpFL3NjUONyNnJlEKq17n4VRmINshc='; object-src 'self';",
+  "permissions": ["storage", "tabs", "webRequest", "<all_urls>" ]
 }
