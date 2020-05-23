@@ -11,10 +11,9 @@ export class WordsCatcher {
 
     this.addToInboxBtn = document.createElement('button')
     this.addToInboxBtn.id = this.id
-    this.addToInboxBtn.textContent = 'E'
   }
 
-  setPosition(top: number, left: number) {
+  setPosition(top: number, left: number): void {
     this.addToInboxBtn.style.setProperty('top', `${window.pageYOffset + top + 15}px`)
     this.addToInboxBtn.style.setProperty('left', `${left + 15}px`)
   }
@@ -23,27 +22,27 @@ export class WordsCatcher {
     return this.container.contains(this.addToInboxBtn)
   }
 
-  mount() {
+  mount(): void {
     this.container.appendChild(this.addToInboxBtn)
   }
 
-  unMount = () => {
+  unMount = (): void => {
     this.addToInboxBtn.remove()
   }
 
-  getAddToInboxBtn() {
+  getAddToInboxBtn(): HTMLButtonElement {
     return this.addToInboxBtn
   }
 
-  getText() {
+  getText(): string | null {
     return this.text
   }
 
-  setText(text: string) {
+  setText(text: string): void {
     this.text = text
   }
 
-  onSelect(callback: (text: string | null) => void) {
+  onSelect(callback: (text: string | null) => void): void {
     this.addToInboxBtn.addEventListener('click', () => {
       callback(this.text)
     })
