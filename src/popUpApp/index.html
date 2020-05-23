@@ -5,10 +5,22 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Elena word/text trainer</title>
+    <title>Elena pop up menu</title>
+    <link rel="stylesheet" href="./index.pcss"/>
 </head>
-<body>
-<div id="appRoot"></div>
-<script src="index.tsx"></script>
+<body class="flex justify-center">
+<div id="ext-elena-popup" class="border-2 p-3">
+    <a href="#" id="ext-elena-inbox-link" target="_blank"
+       class="flex justify-center items-center shadow rounded-full px-4 py-1 hover:bg-blue-100"
+    >
+        <i class="gg-inbox mr-2">&nbsp;</i> Inbox
+    </a>
+</div>
+<script>
+    const extLinkBtn = document.getElementById('ext-elena-inbox-link')
+    const elenaExtId = chrome.runtime.id || 'ncimlofohfckmnimfcjhfacpceekddmh'
+
+    extLinkBtn.href = `chrome-extension://${elenaExtId}/main.html`
+</script>
 </body>
 </html>
