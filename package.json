@@ -10,11 +10,13 @@
     "clean": "rm -rf dist/*",
     "dev:wordsCatcher": "parcel src/wordsCatcher/dev-index.html",
     "dev:popUpApp": "parcel src/popUpApp/index.html",
+    "dev:wordsTrainer": "parcel src/wordsTrainer/index.html",
     "build:wordsCatcher:js": "parcel build src/wordsCatcher/index.ts -d dist/wordsCatcher --no-source-maps",
     "build:wordsCatcher:css": "parcel build src/wordsCatcher/index.pcss -d dist/wordsCatcher --no-source-maps",
     "build:wordsCatcher": "yarn build:wordsCatcher:js && yarn build:wordsCatcher:css",
     "build:popUpApp": "parcel build src/popUpApp/index.html -d dist/popUpApp --public-url ./ --no-source-maps",
-    "build": "yarn clean && yarn cp:assets && yarn build:wordsCatcher && yarn build:popUpApp",
+    "build:wordsTrainer": "parcel build src/wordsTrainer/index.html -d dist/wordsTrainer --public-url ./ --no-source-maps",
+    "build": "yarn clean && yarn cp:assets && yarn build:wordsCatcher && yarn build:popUpApp && yarn build:wordsTrainer",
     "cp:assets": "yarn cp:manifest && yarn cp:static",
     "cp:manifest": "cp src/manifest.json dist",
     "cp:static": "cp -r src/static dist/static",
@@ -31,6 +33,7 @@
     "tailwindcss": "^1.4.4"
   },
   "devDependencies": {
+    "utility-types": "^3.10.0",
     "@types/chrome": "^0.0.114",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",

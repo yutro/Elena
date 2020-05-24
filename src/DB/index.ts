@@ -1,5 +1,5 @@
 import Dixie from 'dexie'
-import { extId } from '../consts'
+import { Optional } from 'utility-types'
 
 type ID = number
 
@@ -17,21 +17,23 @@ interface Setting {
   value: string | boolean
 }
 
-interface Deck {
-  id?: ID
+export type Deck = {
+  id: ID
   name: string
-  values: ReadonlyArray<ID>
+  textsIds: ReadonlyArray<ID>
 }
 
+export type DeckList = Array<Deck>
+
 const dbConfig = {
-  name: extId,
+  name: 'ext-elena',
   version: 1,
 }
 
 class DataBase extends Dixie {
   texts: Dixie.Table<Text, number>
   settings: Dixie.Table<Setting, number>
-  decks: Dixie.Table<Deck, number>
+  decks: Dixie.Table<Optional<Deck, 'id'>, number>
 
   constructor() {
     super(dbConfig.name)
