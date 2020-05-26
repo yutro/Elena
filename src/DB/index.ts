@@ -7,7 +7,6 @@ interface Text {
   id?: ID
   content: string
   description?: string
-  status: 'active' | 'archived'
   deckId?: ID
 }
 

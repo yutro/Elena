@@ -1,10 +1,24 @@
+import { Db } from '../DB'
 import { getSelectedText } from '../utils'
 import { WordsCatcher } from './WordsCatcher'
 
 const catcher = new WordsCatcher()
 
-catcher.onSelect((text) => {
-  console.log('-----9----', text)
+catcher.onSelect(async (text) => {
+  if (text) {
+    if (!(await Db.texts.where('content').equalsIgnoreCase(text).count())) {
+      const answer = confirm(`add text "${text}" to Elena's incoming?`)
+
+      if (answer) {
+        await Db.texts.put({ content: text })
+        alert(`text "${text}" added`)
+        catcher.unMount()
+      }
+    } else {
+      alert(`text "${text}" already added`)
+      catcher.unMount()
+    }
+  }
 })
 
 window.addEventListener('mouseup', (event) => {
