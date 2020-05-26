@@ -10,7 +10,7 @@ catcher.onSelect(async (text) => {
       const answer = confirm(`add text "${text}" to Elena's incoming?`)
 
       if (answer) {
-        await Db.texts.put({ content: text })
+        await Db.texts.put({ content: text, deckId: 0 })
         alert(`text "${text}" added`)
         catcher.unMount()
       }
