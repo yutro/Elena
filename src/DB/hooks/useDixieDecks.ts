@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Optional } from 'utility-types'
 import { Db, Deck, DeckList } from '../index'
 import { useArray } from 'react-hanger/array'

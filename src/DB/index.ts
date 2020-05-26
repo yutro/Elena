@@ -3,12 +3,14 @@ import { Optional } from 'utility-types'
 
 type ID = number
 
-interface Text {
-  id?: ID
+export interface Text {
+  id: ID
   content: string
   description?: string
-  deckId?: ID
+  deckIds: ReadonlyArray<ID>
 }
+
+export type TextsList = ReadonlyArray<Text>
 
 interface Setting {
   id?: ID

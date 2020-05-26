@@ -1,4 +1,5 @@
-import { Db } from '../DB'
+import { Optional } from 'utility-types'
+import { Db, Text } from '../DB'
 import { getSelectedText } from '../utils'
 import { WordsCatcher } from './WordsCatcher'
 
@@ -10,7 +11,9 @@ catcher.onSelect(async (text) => {
       const answer = confirm(`add text "${text}" to Elena's incoming?`)
 
       if (answer) {
-        await Db.texts.put({ content: text, deckId: 0 })
+        const textItem: Optional<Text, 'id'> = { content: text, deckIds: [0] }
+
+        await Db.texts.put(textItem as Text)
         alert(`text "${text}" added`)
         catcher.unMount()
       }
